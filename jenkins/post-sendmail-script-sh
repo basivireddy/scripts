@@ -14,15 +14,17 @@ pipeline {
     }
     post {
         always {
-            container('my-container') {
+            container('builder') {
                 script {
                 def Status = currentBuild.currentResult
                 def logText = currentBuild.rawBuild.getLog(1000).join('\n')
                 writeFile file: 'build-log.txt', text: logText
                 echo "Final Build Status: ${Status}"
                 sh """
-                            echo "Finel 2 Build Status: ${Status}"
-                            cat build-log.txt
+                  Subject="Jenkins Build ${Status} : Job ${JOB_NAME} Build Number ${BUILD_NUMBER}"
+                  Recipients="test@gmail.com"
+                  echo "${Status}: Job ${JOB_NAME} Build Number ${BUILD_NUMBER} <br> <br> More info at: ${JOB_URL}" > body.txt
+                  python3 script.py body.txt build-log.txt "$Subject" "$Recipients"
                  """
                 }
              }
