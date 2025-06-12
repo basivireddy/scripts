@@ -14,16 +14,18 @@ pipeline {
     }
     post {
         always {
-            script {
-            def Status = currentBuild.currentResult
-            def logText = currentBuild.rawBuild.getLog(1000).join('\n')
-            writeFile file: 'build-log.txt', text: logText
-            echo "Final Build Status: ${Status}"
-            sh """
-                        echo "Finel 2 Build Status: ${Status}"
-                        cat build-log.txt
-             """
-            } 
+            container('my-container') {
+                script {
+                def Status = currentBuild.currentResult
+                def logText = currentBuild.rawBuild.getLog(1000).join('\n')
+                writeFile file: 'build-log.txt', text: logText
+                echo "Final Build Status: ${Status}"
+                sh """
+                            echo "Finel 2 Build Status: ${Status}"
+                            cat build-log.txt
+                 """
+                }
+             }
         }
     }
 }
