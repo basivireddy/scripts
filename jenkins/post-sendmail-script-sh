@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages {
+        stage('Pass Build Status to Shell') {
+            steps {
+                script {
+                    def buildStatus = currentBuild.currentResult
+                    sh """
+                        echo "Build Status inside shell: ${buildStatus}"
+                    """
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+            def Status = currentBuild.currentResult
+            def logText = currentBuild.rawBuild.getLog(1000).join('\n')
+            writeFile file: 'build-log.txt', text: logText
+            echo "Final Build Status: ${Status}"
+            sh """
+                        echo "Finel 2 Build Status: ${Status}"
+                        cat build-log.txt
+             """
+            } 
+        }
+    }
+}
