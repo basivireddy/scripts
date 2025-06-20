@@ -2,6 +2,39 @@ Here’s a simple and clear **Python script to parse Apache access logs** and **
 
 ---
 
+## ✅ **Python Script: Count HTTP Status Codes in Apache Logs without collections**
+
+```python
+import re
+from collections import Counter
+
+# Path to your Apache log file
+log_file_path = 'access.log'
+
+# Regular expression to match status codes from common Apache log format
+log_pattern = re.compile(r'"\s(\d{3})\s')
+
+# Counter to store the occurrences
+status_codes = {}
+
+# Read and parse the log file
+with open(log_file_path, 'r') as file:
+    for line in file:
+        match = log_pattern.search(line)
+        if match:
+            status_code = match.group(1)
+            if status_code not in status_codes.keys():
+                   status_codes[status_code] = 1
+            else:
+                 status_codes[status_code] += 1
+
+# Print results
+print("HTTP Status Code Counts:")
+for code, count in status_codes.items():
+    print(f"Status Code {code}: {count} times")
+```
+
+---
 ## ✅ **Python Script: Count HTTP Status Codes in Apache Logs**
 
 ```python
@@ -30,7 +63,7 @@ print("HTTP Status Code Counts:")
 for code, count in status_codes.items():
     print(f"Status Code {code}: {count} times")
 ```
-
+---
 ---
 
 ## 🔍 **What this script does:**
