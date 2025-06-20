@@ -6,7 +6,6 @@ Here’s a simple and clear **Python script to parse Apache access logs** and **
 
 ```python
 import re
-from collections import Counter
 
 # Path to your Apache log file
 log_file_path = 'access.log'
